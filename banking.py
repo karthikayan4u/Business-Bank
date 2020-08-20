@@ -52,7 +52,11 @@ def create_account():
 def log_in():
     customer_account_number = input("\nEnter your card number:\n>")
     customer_pin = input("Enter your PIN:\n>")
-    check_sum = check_sum_calculator(customer_account_number[:-1]) + int(customer_account_number[-1])
+    if len(customer_account_number) == 16:
+        check_sum = check_sum_calculator(customer_account_number[:-1]) + int(customer_account_number[-1])
+    else:
+        print("Probably you made mistake in the card number. Please try again!\n")
+        main()
     if check_sum % 10 != 0:
         print("\nWrong card number or PIN!\n")
         main()
@@ -79,12 +83,16 @@ def log_in():
             print("\nTransfer")
             recipient_number = input("Enter card number:\n>")
             recipient_info = exe_commit(recipient_number, ret=True)
-            check_sum_res = check_sum_calculator(recipient_number[:-1]) + int(recipient_number[-1])
+            if len(recipient_number) == 16:
+                check_sum_res = check_sum_calculator(recipient_number[:-1]) + int(recipient_number[-1])
+            else:
+                print("Probably you made mistake in the card number. Please try again!\n")
+                continue
             if check_sum_res % 10 != 0:
                 print("Probably you made mistake in the card number. Please try again!\n")
                 continue
             elif recipient_number == customer_account_number:
-                print("You can't transfer money to the same account!")
+                print("You can't transfer money to the same account!\n")
                 continue
             elif not recipient_info:
                 print("Such a card does not exist.\n")
